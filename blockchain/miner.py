@@ -7,7 +7,7 @@ from uuid import uuid4
 
 from timeit import default_timer as timer
 
-import random
+from random import *
 
 
 def proof_of_work(last_proof):
@@ -23,22 +23,26 @@ def proof_of_work(last_proof):
 
     print("Searching for next proof")
     proof = 0
-    #  TODO: Your code here
+    while valid_proof(last_proof, proof) is False:
+        random_int = randint(1,7)
+        proof+= random_int
+    
 
     print("Proof found: " + str(proof) + " in " + str(timer() - start))
     return proof
 
 
-def valid_proof(last_hash, proof):
+def valid_proof(last_proof, proof):
     """
     Validates the Proof:  Multi-ouroborus:  Do the last six characters of
     the last hash match the first six characters of the proof?
 
     IE:  last_hash: ...999123456, new hash 123456888...
     """
+    old_hash = hashlib.sha256(f'{last_proof}'.encode()).hexdigest()[-6:]
+    new_hash = hashlib.sha256(f'{proof}'.encode()).hexdigest()[:6]
+    return old_hash==new_hash
 
-    # TODO: Your code here!
-    pass
 
 
 if __name__ == '__main__':
